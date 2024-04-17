@@ -30,6 +30,40 @@
                 height: 100%; /* Anda mungkin perlu menyesuaikan nilai ini sesuai kebutuhan Anda */
             }
         </style>
+        <style>
+            #weather-card {
+                position: fixed;
+                bottom: 10px;
+                left: 10px;
+                width: 185px;
+                padding: 10px;
+                background-color: rgba(223, 255, 230, 0.8);
+                border-radius: 10px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                z-index: 9999;
+                display: flex; /* Menjadikan kontainer card cuaca menjadi flex container */
+                display: flex; /* Menjadikan kontainer card cuaca menjadi flex container */
+                align-items: center; /* Pusatkan item ke tengah secara vertikal */
+            }
+            #weather-card h2 {
+                font-size: 14px; /* Ukuran teks sedang */
+                margin-bottom: 5px; /* Kurangi jarak bawah untuk menyesuaikan jarak dengan ikon */
+                margin-top: 0; /* Atur margin atas ke 0 */
+            }
+            #weather-card p {
+                line-height: 1; /* Jarak antar baris */
+                font-size: 10px; /* Ukuran teks kecil */
+                margin: 0; /* Atur margin ke 0 */
+            }
+            #weather-icon {
+                width: 50px; /* Lebar ikon cuaca */
+                height: auto;
+                margin-right: 10px; /* Berikan jarak antara ikon dan teks */
+            }
+            #weather-temperature {
+                margin-top: 5px; /* Berikan jarak atas antara teks kota dan teks temperatur */
+            }
+        </style>
         
     </head>
     
@@ -756,6 +790,34 @@
             </div>
         </footer>
 
+        <div id="weather-card">
+            <img id="weather-icon" src="" alt="Weather Icon">
+            <h2 id="weather-city"></h2>
+            <p id="weather-temperature"></p>
+        </div>
+
+        <script>
+            // Ganti 'YOUR_API_KEY' dengan kunci API OpenWeatherMap Anda
+            const apiKey = 'eb2b1159426af832f519feae48e29316';
+            const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=Jakarta,ID&appid=${apiKey}&units=metric`;
+
+            // Fungsi untuk mengambil data cuaca
+            async function getWeather() {
+                try {
+                    const response = await fetch(apiUrl);
+                    const data = await response.json();
+                    // Tampilkan data cuaca
+                    document.getElementById('weather-icon').src = `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
+                    document.getElementById('weather-city').innerText = data.name;
+                    document.getElementById('weather-temperature').innerText = `${data.main.temp}°C`;
+                } catch (error) {
+                    console.error('Gagal mengambil data cuaca:', error);
+                }
+            }
+
+            // Panggil fungsi getWeather saat halaman dimuat
+            window.onload = getWeather;
+        </script>
 
         <!-- JAVASCRIPT FILES -->
         <script src="js/jquery.min.js"></script>
